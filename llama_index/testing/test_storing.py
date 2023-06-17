@@ -1,12 +1,15 @@
 import logging
 import sys
+import os
 from llama_index import (
     LLMPredictor,
     ServiceContext,
-    ListIndex, 
+    TreeIndex,
     SimpleWebPageReader,
 )
 from langchain import OpenAI
+
+file_loc = os.path.dirname(__file__)
 
 # set up logging 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -18,8 +21,14 @@ llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-
 service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
 
 # build index
-documents = SimpleWebPageReader(html_to_text=True).load_data(["https://www.webmd.com/fitness-exercise/guide/muscle-strain"])
-index = ListIndex.from_documents(documents, service_context=service_context)
+
+with open(os.path.join(file_loc, 'webpages.txt'), 'r') as file:
+    data = file.read()
+    websites = data.split('\n')
+
+
+documents = SimpleWebPageReader(html_to_text=True).load_data(websites)
+index = TreeIndex.from_documents(documents, service_context=service_context)
 
 # Store Data
 persist_dir = 'llama_index/testing/storage'

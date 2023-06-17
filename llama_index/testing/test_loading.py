@@ -20,6 +20,6 @@ index = load_index_from_storage(storage_context)
 # execute query
 query_engine = index.as_query_engine()
 log.info('Formed Query Engine')
-response = query_engine.query("What are the common symptoms of muscle strain")
+response = query_engine.query("What are the most commonly injured muscles")
 log.info('Submitted and recieved query')
 log.info(response)
