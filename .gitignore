@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+react/split/node_modules
+react/split/.pnp
+react/split/.pnp.js
+
+# testing
+react/split//coverage
+
+# production
+react/split//build
+
+# misc
+react/split/.DS_Store
+react/split/.env.local
+react/split/.env.development.local
+react/split/.env.test.local
+react/split/.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
