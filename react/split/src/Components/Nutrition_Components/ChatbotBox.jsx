@@ -114,7 +114,7 @@ const ChatbotBox = () => {
                 placeholder="Enter email content"
                 value={response}
                 style={{ resize: 'none', width: '90%', height: 'auto' }}
-                onChange={(e) => setFinalResponse(e.target.value)}
+                onChange={(e) => setResponse(e.target.value)}
                 ref={textAreaRef}
               />
               <button type="submit">
