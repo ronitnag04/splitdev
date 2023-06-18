@@ -33,7 +33,6 @@ const ChatbotBox = () => {
   return (
     <div className="responseBox">
       <p className="chatbot-title">
-        <b>Chatbot</b>
       </p>
       <form onSubmit={handleSubmit}>
         <textarea

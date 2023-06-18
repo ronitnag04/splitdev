@@ -46,15 +46,16 @@
 .responseBox {
   background-color: #fff;
   border-radius: 10px;
-  padding: 10px;
-  padding-bottom: 20px;
+  padding: 20px;  /* Increase padding here */
+  padding-bottom: 30px;  /* Increase padding-bottom here */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   width: 80vw; /* Updated width to 80% of viewport width */
   max-width: 1000px; /* Added max-width to limit the width on larger screens */
-  margin: 20px auto;
+  margin: 30px auto;  /* Increase margin here */
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
 }
+
 
 .chatbot-title {
   font-size: large;
