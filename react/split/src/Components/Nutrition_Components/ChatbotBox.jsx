@@ -14,8 +14,7 @@ const ChatbotBox = () => {
     fetch(url, {
       method: 'GET',
       mode: 'cors',
-    })
-    .then((response) => response.json())
+    }).then((response) => response.json())
     .then((data) => {
         console.log('Response:', data);
         setResponse(data); 

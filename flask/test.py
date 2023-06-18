@@ -1,9 +1,14 @@
 from flask import Flask
-from flask import request
+from flask import request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route("/echo", methods=['GET'])
+@app.route('/test', methods=['GET'])
 def echo():
     params = request.args.to_dict()
-    return params['text']
+    email = params.get('emailContent')
+    app.logger.info(f'Email request said: {email}')
+    return jsonify(email)
+
