@@ -1,5 +1,5 @@
 import React from 'react'
-import heroImage from "../combined.png"; // replace this with the path to your image
+import heroImage from "../combined2.png"; // replace this with the path to your image
 
 const Hero = () => {
   return (

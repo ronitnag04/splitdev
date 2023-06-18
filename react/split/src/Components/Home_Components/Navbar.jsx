@@ -1,20 +1,21 @@
 import React from 'react';
+import logoImage from '../splittextalone.png';
 
 const styles = {
   navbar: {
     backgroundColor: '#ededed',
-    height: '60px',
+    height: '50px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '0 50px',
   },
   logo: {
-    color: '#305E48',
-    fontSize: '24px',
-    fontWeight: 'bold',
-    letterSpacing: '3px',
     cursor: 'pointer',
+  },
+  logoImage: {
+    height: '40px',
+    width: 'auto',
   },
   navbarNav: {
     listStyle: 'none',
@@ -71,8 +72,8 @@ const Navbar = () => {
         onMouseEnter={() => setLogoHovered(true)}
         onMouseLeave={() => setLogoHovered(false)}
       >
-        <a href="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
-          {splitLetters('SPLIT')}
+        <a href="/Home" style={{ textDecoration: 'none' }}>
+          <img src={logoImage} alt="Logo" style={styles.logoImage} />
         </a>
       </div>
       <ul style={styles.navbarNav}>

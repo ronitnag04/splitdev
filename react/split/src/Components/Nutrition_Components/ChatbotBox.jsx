@@ -107,7 +107,7 @@ const ChatbotBox = () => {
           </p>
           <div
             className="response"
-            style={{ textAlign: 'center', marginBottom: '20px', marginLeft: '-20px' }}
+            style={{ textAlign: 'center', marginBottom: '20px'}}
           >
             <form onSubmit={handlePostRequest}>
               <textarea
