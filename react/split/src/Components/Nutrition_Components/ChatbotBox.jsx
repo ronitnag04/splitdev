@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import './ChatbotBox.css';
 
 const ChatbotBox = () => {
@@ -8,25 +7,24 @@ const ChatbotBox = () => {
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const data = { emailContent };
 
-    fetch('http://localhost:5000/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    const url = new URL('http://localhost:5000/test');
+    url.searchParams.append('emailContent', emailContent);
+
+    fetch(url, {
+      method: 'GET',
       mode: 'no-cors',
     })
-    .then(() => {
-        console.log('Request sent:', data);
-        setResponse('Email sent!'); // Not actual server response, because we cannot read it in 'no-cors' mode
+    .then((response) => response.text())
+    .then((data) => {
+        console.log('Response:', data);
+        setResponse('Email sent!'); 
     })
     .catch((error) => {
         console.error('Error:', error);
     });
 
-    console.log('Sending request:', data); // Log the sent request
+    console.log('Sending request:', url); // Log the sent request
 
   }, [emailContent]);
 
