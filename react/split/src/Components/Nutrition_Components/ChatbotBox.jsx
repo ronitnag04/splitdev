@@ -4,7 +4,7 @@ import { FiSend } from 'react-icons/fi';
 
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState(`Test`);
   const [finalResponse, setFinalResponse] = useState('');  // New State
   
   const textAreaRef = useRef(null);
@@ -38,32 +38,29 @@ const ChatbotBox = () => {
     console.log('Sending request:', url); // Log the sent request
   }, [emailContent]);
 
-  const handleSubmitFinal = useCallback((e) => {  // New Function
+  const handlePostRequest = useCallback((e) => {
     e.preventDefault();
 
-    // Insert your POST request here.
-    // I'm using a placeholder URL and dummy data
-    fetch('http://localhost:5000/emailsend', {
+    const url = 'http://localhost:5000/emailsend';
+
+    fetch(url, {
       method: 'POST',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        response: finalResponse
-      })
+      body: JSON.stringify({ response }),
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log('Final Response:', data);
-      // Handle response here
+      console.log('Response:', data);
     })
     .catch((error) => {
       console.error('Error:', error);
     });
 
-    console.log('Sending final request:', finalResponse); // Log the sent request
-  }, [finalResponse]);
+    console.log('Sending request:', url); 
+  }, [response]);
 
   return (
     <div className="responseBox">
@@ -85,12 +82,12 @@ const ChatbotBox = () => {
         <div>
           <p className="chatbot-title"><b>Assistant</b></p>
           <div className="response" style={{ textAlign: 'center', marginBottom: '20px', marginLeft: '-20px' }}>
-          <form onSubmit={handleSubmitFinal}>
+          <form onSubmit={handlePostRequest}>
             <textarea
               placeholder="Enter email content"
-              value={finalResponse}  // Use finalResponse state
+              value={response}
               style={{ resize: 'none', width: '90%', height: 'auto' }}
-              onChange={(e) => setFinalResponse(e.target.value)}  // Update finalResponse on change
+              onChange={(e) => setFinalResponse(e.target.value)} 
               ref={textAreaRef}
             />
             <button type="submit">
