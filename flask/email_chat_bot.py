@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, jsonify
+from flask import request, jsonify, Response
 from flask_cors import CORS
 
 import os
@@ -10,12 +10,18 @@ from llama_index import (
     load_index_from_storage,
 )
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 root_dir = os.curdir
 persist_dir = os.path.join(root_dir, 'llama_index', 'train_emails', 'storage')
 key = os.environ['OPENAI_API_KEY']
+
+from google_api.send_email import gmail_send_message
 
 def get_index():
     # set up logging 
@@ -34,6 +40,14 @@ def email_generate():
     params = request.args.to_dict()
     prompt = params.get('prompt')
     app.logger.info(f'Email request said: {prompt}')
-    response = jsonify(chat_engine.chat(prompt))
-    app.logger.info(f'Response JSON: {response}')
+    response = jsonify(chat_engine.chat(prompt).response)
     return response
+
+
+@app.route('/emailsend', methods=['POST'])
+def email_send():
+    body = request.get_json()
+    app.logger.info(body)
+    gmail_send_message("awesomeninja5539@gmail.com", "splitdevran@gmail.com", "Test", body['response'])
+    return Response('Sent email', status=200)
+    
