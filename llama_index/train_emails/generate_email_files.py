@@ -4,7 +4,7 @@ import os
 this_dir = os.path.dirname(__file__)
 email_dir = os.path.join(this_dir, 'emails')
 
-messages_df = pd.read_csv(os.path.join(this_dir, 'email_read.csv'), index_col='id')
+messages_df = pd.read_csv(os.path.join(this_dir, 'emails_with_emotions.csv'), index_col='id')
 
 for id, row in messages_df.iterrows():
     with open(os.path.join(email_dir, f'{id}.txt'), 'w') as file:
@@ -16,5 +16,7 @@ for id, row in messages_df.iterrows():
         file.write('\n')
         file.write(row['Subject'])
         file.write('\n')
-        file.write(row['Body'])
+        file.write(str(row['Body']))
+        file.write('\n')
+        file.write(row['Emotions'])
         file.write('\n')

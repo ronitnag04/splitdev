@@ -31,9 +31,10 @@ def main():
     creds = None
     this_dir = os.path.dirname(__file__)
 
-    if os.path.exists(os.path.join(this_dir, 'email_read.csv')):
-        messages_df = pd.read_csv(os.path.join(this_dir, 'email_read.csv'), index_col='id')
-        old_message_ids = set(messages_df.index.values)
+    if os.path.exists(os.path.join(this_dir, 'emails_read.csv')):
+        messages_df = pd.read_csv(os.path.join(this_dir, 'emails_read.csv'))
+        old_message_ids = set(messages_df['id'].values)
+        print(old_message_ids)
     else:
         messages_df = pd.DataFrame([], columns=df_columns)
         old_message_ids = set()
@@ -75,31 +76,34 @@ def main():
                 for values in email_data:
                     name = values['name']
                     value = values['value']
-                    if name == 'Subject':
+                    if name.lower() == 'subject':
                         message_data['Subject'] = value
-                    elif name == 'From':
+                    elif name.lower() == 'from':
                         message_data['From'] = value
-                    elif name == 'To':
+                    elif name.lower() == 'to':
                         message_data['To'] = value
-                    elif name == 'Date':
+                    elif name.lower() == 'date':
                         message_data['Date'] = value
 
                 try:
                     payload = msg['payload']
-                    body = parse_parts(payload['parts'][0])
+                    if 'parts' in payload.keys():
+                        body = parse_parts(payload['parts'][0])
+                    else:
+                        body = parse_parts(payload)
                     message_data['Body'] = body
                     new_messages_data.append(message_data)
                 except BaseException as error:
                     print('An error occurred: ', error)
+                    print(msg['payload'])
                 message_count += 1
                 print(f'Read message {id}')
             
             if len(new_messages_data) > 0:
                 new_messages_df = pd.DataFrame(new_messages_data)
-                new_messages_df.set_index('id', inplace=True)
                 messages_df = pd.concat((messages_df, new_messages_df), axis=0)
-            save_file = os.path.join(this_dir, 'email_read.csv')
-            messages_df.to_csv(save_file, index_label='id')
+            save_file = os.path.join(this_dir, 'emails_read.csv')
+            messages_df.to_csv(save_file)
             print(f'Saved email dataframe at {save_file}')
 
     except HttpError as error:
