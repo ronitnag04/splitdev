@@ -4,7 +4,7 @@ import { FiSend } from 'react-icons/fi';
 
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
-  const [response, setResponse] = useState(``);
+  const [response, setResponse] = useState('');
   const [finalResponse, setFinalResponse] = useState('');  // New State
   
   const textAreaRef = useRef(null);
@@ -29,7 +29,7 @@ const ChatbotBox = () => {
     .then((response) => response.json())
     .then((data) => {
       console.log('Response:', data);
-      setResponse(data); 
+      setResponse(data.response); 
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -45,6 +45,7 @@ const ChatbotBox = () => {
     // I'm using a placeholder URL and dummy data
     fetch('http://localhost:5000/emailsend', {
       method: 'POST',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -87,10 +88,9 @@ const ChatbotBox = () => {
           <form onSubmit={handleSubmitFinal}>
             <textarea
               placeholder="Enter email content"
-              value={response}
+              value={finalResponse}  // Use finalResponse state
               style={{ resize: 'none', width: '90%', height: 'auto' }}
               onChange={(e) => setFinalResponse(e.target.value)}  // Update finalResponse on change
-              readOnly
               ref={textAreaRef}
             />
             <button type="submit">
