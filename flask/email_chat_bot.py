@@ -46,8 +46,11 @@ def email_generate():
 
 @app.route('/emailsend', methods=['POST'])
 def email_send():
-    body = request.get_json()
-    app.logger.info(body)
-    gmail_send_message("awesomeninja5539@gmail.com", "splitdevran@gmail.com", "Test", body['response'])
-    return Response('Sent email', status=200)
+    try:
+        body = request.get_json()
+        app.logger.info(body)
+        gmail_send_message(body['email'], "splitdevran@gmail.com", body['subject'], body['message'])
+        return jsonify('Sucesss')
+    except BaseException as err:
+        return jsonify(f'Failed to send email {err.text}')
     
