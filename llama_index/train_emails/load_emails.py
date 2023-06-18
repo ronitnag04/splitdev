@@ -9,6 +9,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 import pandas as pd
+df_columns = ['id', 'Date', 'To', 'From', 'Subject', 'Body']
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -32,8 +33,10 @@ def main():
 
     if os.path.exists(os.path.join(this_dir, 'email_read.csv')):
         messages_df = pd.read_csv(os.path.join(this_dir, 'email_read.csv'), index_col='id')
+        old_message_ids = set(messages_df.index.values)
     else:
-        messages_df = pd.DataFrame([], columns=['id', 'To', 'From', 'Subject', 'Body'])
+        messages_df = pd.DataFrame([], columns=df_columns)
+        old_message_ids = set()
 
     if os.path.exists(os.path.join(this_dir, 'token.json')):
         creds = Credentials.from_authorized_user_file(os.path.join(this_dir, 'token.json'), SCOPES)
@@ -61,7 +64,8 @@ def main():
             for message in messages:
                 message_data = dict()
                 id = message['id']
-                if id in messages_df.index.values or id in new_message_ids:
+                if id in old_message_ids or id in new_message_ids:
+                    print(f'Skipping email {id}')
                     continue
 
                 new_message_ids.add(id)
@@ -70,15 +74,15 @@ def main():
                 email_data = msg['payload']['headers']
                 for values in email_data:
                     name = values['name']
+                    value = values['value']
                     if name == 'Subject':
-                        subject = values['value']
-                        message_data['Subject'] = subject
+                        message_data['Subject'] = value
                     elif name == 'From':
-                        from_ = values['value']
-                        message_data['From'] = from_
+                        message_data['From'] = value
                     elif name == 'To':
-                        to = values['value']
-                        message_data['To'] = to
+                        message_data['To'] = value
+                    elif name == 'Date':
+                        message_data['Date'] = value
 
                 try:
                     payload = msg['payload']
@@ -94,7 +98,9 @@ def main():
                 new_messages_df = pd.DataFrame(new_messages_data)
                 new_messages_df.set_index('id', inplace=True)
                 messages_df = pd.concat((messages_df, new_messages_df), axis=0)
-            messages_df.to_csv(os.path.join(this_dir, 'email_read.csv'))
+            save_file = os.path.join(this_dir, 'email_read.csv')
+            messages_df.to_csv(save_file, index_label='id')
+            print(f'Saved email dataframe at {save_file}')
 
     except HttpError as error:
         print('An error occurred: ', error)
