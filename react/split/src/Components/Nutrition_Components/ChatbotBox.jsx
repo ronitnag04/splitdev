@@ -30,7 +30,7 @@ const ChatbotBox = () => {
     .then((response) => response.json())
     .then((data) => {
       console.log('Response:', data);
-      setResponse(data.response); 
+      setResponse(data); 
     })
     .catch((error) => {
       console.error('Error:', error);
