@@ -4,7 +4,7 @@ import { FiSend } from 'react-icons/fi';
 
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
-  const [response, setResponse] = useState('Test');
+  const [response, setResponse] = useState('');
   const [finalResponse, setFinalResponse] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
