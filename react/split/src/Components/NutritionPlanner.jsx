@@ -11,7 +11,7 @@ const NutritionPlanner = () => {
       <div>
         <img src={ImageBanner} alt="Banner" style={{ width: '100%', height: 'auto' }} />
       </div>
-      <div style={{ marginLeft: '18%', padding: '20px', width: '100%', maxWidth: '1000px' }}>
+      <div style={{ marginLeft: '13%', padding: '20px', width: '100%', maxWidth: '1000px' }}>
         <ChatbotBox />
       </div>
       <AIPowered />
