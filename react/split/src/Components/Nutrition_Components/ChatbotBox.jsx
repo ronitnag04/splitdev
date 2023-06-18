@@ -18,14 +18,13 @@ const ChatbotBox = () => {
       body: JSON.stringify(data),
       mode: 'no-cors',
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);  // Log the successful response data
-        setResponse(data);
-      })
-      .catch((error) => {
+    .then(() => {
+        console.log('Request sent:', data);
+        setResponse('Email sent!'); // Not actual server response, because we cannot read it in 'no-cors' mode
+    })
+    .catch((error) => {
         console.error('Error:', error);
-      });
+    });
 
     console.log('Sending request:', data); // Log the sent request
 
