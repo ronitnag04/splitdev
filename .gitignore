@@ -24,3 +24,6 @@ yarn-error.log*
 
 llama_index/openai_api_key.txt
 llama_index/nutrition/__pycache__
+
+google_api/credentials.json
+google_api/token.json

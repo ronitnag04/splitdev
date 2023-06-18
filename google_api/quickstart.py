@@ -41,7 +41,7 @@ def main():
     try:
         service = build('gmail', 'v1', credentials=creds)
         # Call the Gmail API to fetch INBOX
-        results = service.users().messages().list(userId='me', labelIds=['INBOX'], maxResults=20).execute()
+        results = service.users().messages().list(userId='me', labelIds=['SENT'], maxResults=20).execute()
         messages = results.get('messages', [])
         if not messages:
             print('No new messages.')
