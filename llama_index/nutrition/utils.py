@@ -4,9 +4,11 @@ import func_timeout
 import logging
 from llama_index import (
     SimpleWebPageReader,
+    BeautifulSoupWebReader,
     IndexStructType,
     Document
 )
+import urllib
 
 max_wait_time = 3
 
@@ -16,6 +18,17 @@ def timeout_controller(func, args, max_wait_time=max_wait_time) -> tuple[object,
         return result, True
     except:
         return None, False
+    
+def is_valid_url(url):
+        parsed = urllib.parse.urlparse(url)
+        return bool(parsed.netloc) and bool(parsed.scheme)
+
+def parse_website_links(file) -> list[str]:
+    with open(file, 'r') as file:
+        data = file.read()
+        raw_websites = set(data.split('\n'))
+    websites = filter(is_valid_url, raw_websites)
+    return websites
 
 
 def get_website_document(website, reader: SimpleWebPageReader) -> Document:
@@ -25,7 +38,8 @@ def parse_websites(websites, log=logging.getLogger(), verbose=False) -> list[Doc
     sucesses = 0
     total = 0
     documents = []
-    reader = SimpleWebPageReader(html_to_text=True)
+    # reader = SimpleWebPageReader(html_to_text=True)
+    reader = BeautifulSoupWebReader()
     for website in websites:
         total += 1
         try:

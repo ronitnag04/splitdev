@@ -11,7 +11,7 @@ from llama_index import (
 )
 from langchain import OpenAI
 
-from utils import parse_websites, insert_documents
+from utils import parse_websites, insert_documents, parse_website_links
 
 this_file = os.path.dirname(__file__)
 key = os.environ['OPENAI_API_KEY']
@@ -31,14 +31,7 @@ index = TreeIndex([], service_context=service_context, build_tree=False)
 
 
 # build index
-with open(os.path.join(this_file, 'webpages.txt'), 'r') as file:
-    data = file.read()
-    raw_websites = set(data.split('\n'))
-def is_valid_url(url):
-    parsed = urllib.parse.urlparse(url)
-    return bool(parsed.netloc) and bool(parsed.scheme)
-websites = filter(is_valid_url, raw_websites)
-
+websites = parse_website_links(os.path.join(this_file, 'webpages.txt'))
 documents = parse_websites(websites, log, verbose=False)
 
 # insert_documents(index, documents, log, verbose=False)
