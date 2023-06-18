@@ -8,6 +8,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+import pandas as pd
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
@@ -27,6 +29,11 @@ def main():
     """
     creds = None
     this_dir = os.path.dirname(__file__)
+
+    if os.path.exists(os.path.join(this_dir, 'email_read.csv')):
+        messages_df = pd.read_csv(os.path.join(this_dir, 'email_read.csv'), index_col='id')
+    else:
+        messages_df = pd.DataFrame([], columns=['id', 'To', 'From', 'Subject', 'Body'])
 
     if os.path.exists(os.path.join(this_dir, 'token.json')):
         creds = Credentials.from_authorized_user_file(os.path.join(this_dir, 'token.json'), SCOPES)
@@ -49,22 +56,45 @@ def main():
             print('No new messages.')
         else:
             message_count = 0
+            new_messages_data = []
+            new_message_ids = set()
             for message in messages:
-                
-                msg = service.users().messages().get(userId='me', id=message['id']).execute()
+                message_data = dict()
+                id = message['id']
+                if id in messages_df.index.values or id in new_message_ids:
+                    continue
+
+                new_message_ids.add(id)
+                message_data['id'] = id
+                msg = service.users().messages().get(userId='me', id=id).execute()
                 email_data = msg['payload']['headers']
                 for values in email_data:
                     name = values['name']
                     if name == 'Subject':
                         subject = values['value']
-                        print('Subject: ', subject)
+                        message_data['Subject'] = subject
+                    elif name == 'From':
+                        from_ = values['value']
+                        message_data['From'] = from_
+                    elif name == 'To':
+                        to = values['value']
+                        message_data['To'] = to
+
                 try:
                     payload = msg['payload']
                     body = parse_parts(payload['parts'][0])
-                    print('Body: ', body)
+                    message_data['Body'] = body
+                    new_messages_data.append(message_data)
                 except BaseException as error:
                     print('An error occurred: ', error)
                 message_count += 1
+                print(f'Read message {id}')
+            
+            if len(new_messages_data) > 0:
+                new_messages_df = pd.DataFrame(new_messages_data)
+                new_messages_df.set_index('id', inplace=True)
+                messages_df = pd.concat((messages_df, new_messages_df), axis=0)
+            messages_df.to_csv(os.path.join(this_dir, 'email_read.csv'))
 
     except HttpError as error:
         print('An error occurred: ', error)
