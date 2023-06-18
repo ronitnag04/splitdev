@@ -13,12 +13,12 @@ const ChatbotBox = () => {
 
     fetch(url, {
       method: 'GET',
-      mode: 'no-cors',
+      mode: 'cors',
     })
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((data) => {
         console.log('Response:', data);
-        setResponse('Email sent!'); 
+        setResponse(data); 
     })
     .catch((error) => {
         console.error('Error:', error);
