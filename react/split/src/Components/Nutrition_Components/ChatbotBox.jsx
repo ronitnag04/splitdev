@@ -30,11 +30,23 @@ const ChatbotBox = () => {
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
     const data = { age, height, weight, equipment };
-    const params = new URLSearchParams(data);
-    const queryString = params.toString(); 
-    setTimeout(() => {
-      setResponse(queryString);
-    }, 1000);
+
+    fetch('http://localhost:5000/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);  // Log the successful response data
+        setResponse(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
   }, [age, height, weight, equipment]);
 
   const ageOptions = Array.from({ length: 99 }, (_, i) => i + 1);
