@@ -24,6 +24,12 @@ index = load_index_from_storage(storage_context)
 # execute query
 query_engine = index.as_query_engine()
 log.info('Formed Query Engine')
-response = query_engine.query("What should an obese person do to begin their fitness journey")
-log.info('Submitted and recieved query')
-log.info(response)
+
+print('Type in a question, or exit() to quit')
+user_input = input()
+while user_input != 'exit()':
+    response = query_engine.query(user_input)
+    print(response)
+    print()
+    print('Type in a question, or exit() to quit')
+    user_input = input()
