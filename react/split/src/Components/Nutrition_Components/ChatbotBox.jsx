@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './ChatbotBox.css';
 import { FiSend } from 'react-icons/fi';
 
+
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
   const [response, setResponse] = useState(`Test`);
