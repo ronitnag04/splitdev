@@ -5,16 +5,19 @@ import './index.css';
 import App from './App';
 
 // Import your other components here
-import Component1 from './Components/Home.jsx';
-import Component2 from './Components/Chat.jsx';
+import Nutrition from './Components/NutritionPlanner';
+import Workout from './Components/WorkoutPlanner';
+import Social from './Components/SocialForum';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/Home" element={<Component1 />} />
-        <Route path="/Chat" element={<Component2 />} />
+        <Route path="/Home" element={<App />} />
+        <Route path="/WorkoutPlanner" element={<Workout />} />
+        <Route path="/NutritionPlanner" element={<Nutrition />} />
+        <Route path="/SocialForum" element={<Social />} />
         {/* Add more Routes for other components as needed */}
       </Routes>
     </Router>

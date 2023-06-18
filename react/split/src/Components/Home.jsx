@@ -1,10 +1,14 @@
 import React from 'react';
+import Navbar from './Home_Components/Navbar';
+import Hero from './Home_Components/Hero';
+import Body from './Home_Components/Body';
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to My Website!</h1>
-      <p>Enjoy your stay and explore the various features.</p>
+      <Navbar/>
+      <Hero/>
+      <Body/>
     </div>
   );
 }
