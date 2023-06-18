@@ -13,7 +13,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 log = logging.getLogger()
 
-chat_engine = index.as_chat_engine(chat_mode='condense_question', verbose=True)
+chat_engine = index.as_chat_engine(verbose=True)
 
 
 print('Type in a question, or exit() to quit')
