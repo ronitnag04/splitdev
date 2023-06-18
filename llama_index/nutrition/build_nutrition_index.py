@@ -34,15 +34,16 @@ index = TreeIndex([], service_context=service_context, build_tree=False)
 with open(os.path.join(this_file, 'webpages.txt'), 'r') as file:
     data = file.read()
     raw_websites = set(data.split('\n'))
-
 def is_valid_url(url):
     parsed = urllib.parse.urlparse(url)
     return bool(parsed.netloc) and bool(parsed.scheme)
-
 websites = filter(is_valid_url, raw_websites)
+
 documents = parse_websites(websites, log, verbose=False)
+
 # insert_documents(index, documents, log, verbose=False)
 index = TreeIndex.from_documents(documents, service_context=service_context)
+
 
 # Store Data
 persist_dir = os.path.join(this_file, 'storage')
