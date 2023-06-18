@@ -138,3 +138,8 @@
   background-color: #366e4d;
 }
 
+.chatbot-title {
+  text-align: center;
+  font-size: 20px; /* Adjust the size as required */
+}
+
