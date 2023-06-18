@@ -22,28 +22,45 @@ def get_website_document(website, reader: SimpleWebPageReader) -> Document:
     return reader.load_data([website])[0]
 
 def parse_websites(websites, log=logging.getLogger(), verbose=False) -> list[Document]:
+    sucesses = 0
+    total = 0
     documents = []
     reader = SimpleWebPageReader(html_to_text=True)
     for website in websites:
-        if verbose: log.info(f'Parsing website: {website}')
-        document, success = timeout_controller(get_website_document, (website, reader))
-        if success:
-            documents.append(document)
-            if verbose: log.info(f'Sucessfully parsed website: {website}')
-        else:
-            log.warn(f'Failed to parse website: {website}')
-
+        total += 1
+        try:
+            if verbose: log.info(f'Parsing website: {website}')
+            document, success = timeout_controller(get_website_document, (website, reader))
+            if success:
+                documents.append(document)
+                sucesses += 1
+                if verbose: log.info(f'Sucessfully parsed website: {website}')
+            else:
+                log.warn(f'Failed to parse website: {website}')
+        except BaseException as err:
+            log.error(f'Uncaught error {err}')
+    
+    log.info(f'Parsed {sucesses}/{total} websites')
     return documents
 
 def insert_document(index: IndexStructType, document: Document):
     index.insert(document)
 
 def insert_documents(index: IndexStructType, documents:list[Document], log=logging.getLogger(), verbose=False):
+    sucesses = 0
+    total = 0
     for document in documents:
-        _, success = timeout_controller(insert_document, (index, document))
-        if success:
-            if verbose: log.info(f'Sucessfully inserted document')
-        else:
-            log.warn(f'Failed to insert document {document.extra_info_str}')
+        total += 1
+        try:
+            assert document is not None
+            _, success = timeout_controller(insert_document, (index, document))
+            if success:
+                if verbose: log.info(f'Sucessfully inserted document')
+                sucesses += 1
+            else:
+                log.warn(f'Failed to insert document {document.doc_id}')
+        except BaseException:
+            log.error(f'Uncaught error')
+    log.info(f'Inserted {sucesses}/{total} documents')
 
     

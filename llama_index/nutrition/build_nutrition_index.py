@@ -14,6 +14,7 @@ from langchain import OpenAI
 from utils import parse_websites, insert_documents
 
 this_file = os.path.dirname(__file__)
+key = os.environ['OPENAI_API_KEY']
 
 
 # set up logging 
@@ -23,16 +24,16 @@ log = logging.getLogger()
 
 
 # define LLM
-key = os.environ['OPENAI_API_KEY']
 llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-002", openai_api_key=key))
 service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
-index = ListIndex([], service_context=service_context)
+index = TreeIndex([], service_context=service_context, build_tree=False)
+# index = ListIndex([], service_context=service_context) 
 
 
 # build index
 with open(os.path.join(this_file, 'webpages.txt'), 'r') as file:
     data = file.read()
-    raw_websites = data.split('\n')
+    raw_websites = set(data.split('\n'))
 
 def is_valid_url(url):
     parsed = urllib.parse.urlparse(url)
@@ -40,7 +41,8 @@ def is_valid_url(url):
 
 websites = filter(is_valid_url, raw_websites)
 documents = parse_websites(websites, log, verbose=False)
-insert_documents(index, documents, log, verbose=False)
+# insert_documents(index, documents, log, verbose=False)
+index = TreeIndex.from_documents(documents, service_context=service_context)
 
 # Store Data
 persist_dir = os.path.join(this_file, 'storage')

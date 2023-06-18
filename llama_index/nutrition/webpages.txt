@@ -1,9 +1,3 @@
-https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating
-https://www.webmd.com/diet/default.htm
-https://www.niddk.nih.gov/health-information/weight-management/choosing-a-safe-successful-weight-loss-program
-https://www.eatright.org
-https://www.precisionnutrition.com
-https://www.healthline.com/nutrition
 https://www.nutrition.gov
 https://www.authoritynutrition.com
 https://www.hsph.harvard.edu/nutritionsource
@@ -30,12 +24,10 @@ https://www.medicalnewstoday.com/articles/nutrition
 https://www.nutrition.org
 https://www.rd.com/health/diet-weight-loss/nutrition
 https://www.eufic.org/en/healthy-living
-https://www.eatforhealth.gov.au
 https://www.diabetes.co.uk/nutrition
 https://www.cancer.org/healthy/eat-healthy-get-active/nutrition
 https://www.nih.gov/health-information
 https://www.fda.gov/food/nutrition-education-resources-materials
-https://www.diabetes.ca/diabetes-and-you/healthy-living-resources/diet-nutrition
 https://www.medicinenet.com/healthy_eating/article.htm
 https://www.consumerreports.org/cro/health/vitamins-and-supplements
 https://www.health.harvard.edu/topics/nutrition
@@ -43,7 +35,6 @@ https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating/expert
 https://www.health.gov/our-work/food-nutrition
 https://www.choosemyplate.gov/resources
 https://www.nutrition.org.uk
-https://www.eatwell101.com
 https://www.webmd.com/diet/nutrition-food-and-recipes
 https://www.nutrition.org.uk
 https://www.helpguide.org/articles/healthy-eating

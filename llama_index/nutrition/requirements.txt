@@ -5,3 +5,4 @@ langchain
 logging
 sys
 os
+func_timeout
