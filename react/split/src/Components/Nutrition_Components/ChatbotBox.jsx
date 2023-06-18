@@ -1,30 +1,33 @@
 import React, { useState, useCallback } from 'react';
 import './ChatbotBox.css';
+import { FiSend } from 'react-icons/fi';
 
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
   const [response, setResponse] = useState('');
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    const url = new URL('http://localhost:5000/test');
-    url.searchParams.append('emailContent', emailContent);
+    try {
+      const url = new URL('http://localhost:5000/test');
+      url.searchParams.append('emailContent', emailContent);
 
-    fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-    }).then((response) => response.json())
-    .then((data) => {
-        console.log('Response:', data);
-        setResponse(data); 
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+      });
 
-    console.log('Sending request:', url); // Log the sent request
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
 
+      const data = await response.json();
+      console.log('Response:', data);
+      setResponse(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }, [emailContent]);
 
   return (
@@ -38,7 +41,9 @@ const ChatbotBox = () => {
           value={emailContent}
           onChange={(e) => setEmailContent(e.target.value)}
         />
-        <button type="submit">Send Email</button>
+        <button type="submit">
+          <FiSend />
+        </button>
       </form>
       {response && (
         <div className="response">
