@@ -2,16 +2,17 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './ChatbotBox.css';
 import { FiSend } from 'react-icons/fi';
 
-
 const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
-  const [response, setResponse] = useState(`Test`);
-  const [finalResponse, setFinalResponse] = useState('');  // New State
-  
+  const [response, setResponse] = useState('Test');
+  const [finalResponse, setFinalResponse] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+
   const textAreaRef = useRef(null);
 
   useEffect(() => {
-    if(textAreaRef.current) {
+    if (textAreaRef.current) {
       textAreaRef.current.style.height = 'auto';
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
@@ -27,14 +28,14 @@ const ChatbotBox = () => {
       method: 'GET',
       mode: 'cors',
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Response:', data);
-      setResponse(data); 
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response:', data);
+        setResponse(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
     console.log('Sending request:', url); // Log the sent request
   }, [emailContent]);
@@ -48,19 +49,19 @@ const ChatbotBox = () => {
       method: 'POST',
       mode: 'cors',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ response }),
+      body: JSON.stringify({ email,subject,response }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Response:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
-    console.log('Sending request:', url); 
+    console.log('Sending request:', url);
   }, [response]);
 
   return (
@@ -69,6 +70,20 @@ const ChatbotBox = () => {
         <b>Chatbot</b>
       </p>
       <form onSubmit={handleSubmit}>
+        <div className="input-row">
+          <input
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          />
+        </div>
         <textarea
           placeholder="Enter email content"
           value={emailContent}
@@ -78,26 +93,29 @@ const ChatbotBox = () => {
           <FiSend />
         </button>
       </form>
-      
+
       {response && (
         <div>
-          <p className="chatbot-title"><b>Assistant</b></p>
-          <div className="response" style={{ textAlign: 'center', marginBottom: '20px', marginLeft: '-20px' }}>
-          <form onSubmit={handlePostRequest}>
-            <textarea
-              placeholder="Enter email content"
-              value={response}
-              style={{ resize: 'none', width: '90%', height: 'auto' }}
-              onChange={(e) => setFinalResponse(e.target.value)} 
-              ref={textAreaRef}
-            />
-            <button type="submit">
-              <FiSend />
-            </button>
-          </form>
-          
-          
-        </div>
+          <p className="chatbot-title">
+            <b>Assistant</b>
+          </p>
+          <div
+            className="response"
+            style={{ textAlign: 'center', marginBottom: '20px', marginLeft: '-20px' }}
+          >
+            <form onSubmit={handlePostRequest}>
+              <textarea
+                placeholder="Enter email content"
+                value={response}
+                style={{ resize: 'none', width: '90%', height: 'auto' }}
+                onChange={(e) => setFinalResponse(e.target.value)}
+                ref={textAreaRef}
+              />
+              <button type="submit">
+                <FiSend />
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>
