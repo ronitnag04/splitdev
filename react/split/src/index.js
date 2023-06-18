@@ -16,7 +16,7 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="/Home" element={<App />} />
         <Route path="/WorkoutPlanner" element={<Workout />} />
-        <Route path="/NutritionPlanner" element={<Nutrition />} />
+        <Route path="/Message" element={<Nutrition />} />
         <Route path="/SocialForum" element={<Social />} />
         {/* Add more Routes for other components as needed */}
       </Routes>

@@ -1,12 +1,15 @@
-// AIPowered.jsx
 import React from 'react';
 import './AIPowered.css';
 
 const AIPowered = () => {
   return (
     <div className="ai-powered">
-      <h1>AI</h1>
-      <p>This chatbot is powered by advanced AI technologies. It processes your input and generates responses in real time.</p>
+      <div className="ai-icon">
+        <h1>AI</h1>
+      </div>
+      <div className="description">
+        <p>Split is the revolutionary AI-powered email assistant. Utilizing cutting-edge machine learning algorithms, it analyzes your email history to craft personalized, eloquent emails in seconds. Say goodbye to writer's block and hello to effortless communication!</p>
+      </div>
     </div>
   );
 };

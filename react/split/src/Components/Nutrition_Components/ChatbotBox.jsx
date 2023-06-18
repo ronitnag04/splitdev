@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import './ChatbotBox.css';
 
+const SelectInput = ({ value, onChange, options, label }) => (
+  <select value={value} onChange={onChange}>
+    <option value="">{label}</option>
+    {options.map((option) => (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+);
+
+SelectInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired,
+};
+
 const ChatbotBox = () => {
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [equipment, setEquipment] = useState('');
+  const [response, setResponse] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-  
-    // create an object with the current values
-    const data = {
-      age,
-      height,
-      weight,
-      equipment
-    };
+    const data = { age, height, weight, equipment };
     const params = new URLSearchParams(data);
     const queryString = params.toString(); 
     setTimeout(() => {
       setResponse(queryString);
     }, 1000);
-  };
-  
+  }, [age, height, weight, equipment]);
 
-  // I am assuming the ages range from 1 to 99,
-  // the heights from 50 to 95, and weights from 10 to 350 for this example
   const ageOptions = Array.from({ length: 99 }, (_, i) => i + 1);
   const heightOptions = Array.from({ length: 46 }, (_, i) => i + 50);
   const weightOptions = Array.from({ length: 341 }, (_, i) => i + 10);
@@ -40,34 +48,24 @@ const ChatbotBox = () => {
       </p>
       <form onSubmit={handleSubmit}>
         <div className="dropdowns">
-          <select value={age} onChange={(e) => setAge(e.target.value)}>
-            <option value="">Select age</option>
-            {ageOptions.map((age) => (
-              <option key={age} value={age}>
-                {age}
-              </option>
-            ))}
-          </select>
-          <select value={height} onChange={(e) => setHeight(e.target.value)}>
-            <option value="">Select height</option>
-            {heightOptions.map((height) => {
-              const feet = Math.floor(height / 12);
-              const inches = height % 12;
-              return (
-                <option key={height} value={height}>
-                  {`${feet}' ${inches}"`}
-                </option>
-              );
-            })}
-          </select>
-          <select value={weight} onChange={(e) => setWeight(e.target.value)}>
-            <option value="">Select weight</option>
-            {weightOptions.map((weight) => (
-              <option key={weight} value={weight}>
-                {weight} lbs
-              </option>
-            ))}
-          </select>
+          <SelectInput
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            options={ageOptions}
+            label="Select age"
+          />
+          <SelectInput
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            options={heightOptions}
+            label="Select height"
+          />
+          <SelectInput
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            options={weightOptions}
+            label="Select weight"
+          />
         </div>
         <input
           type="text"

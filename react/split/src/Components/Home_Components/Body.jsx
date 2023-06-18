@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FaDumbbell } from 'react-icons/fa';
-import { MdLocalDining } from 'react-icons/md';
-import { IoPersonCircleSharp } from 'react-icons/io5';
+import { AiOutlineMail } from 'react-icons/ai';
+import { RiMailSendLine } from 'react-icons/ri';
+import { FiPenTool } from 'react-icons/fi';
 
 const Body = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [hoveredBox, setHoveredBox] = useState(null); // added this line to keep track of hovered box
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,70 +17,50 @@ const Body = () => {
         setExpanded(false);
       }
     };
-
+  
     window.addEventListener('scroll', handleScroll);
-
+  
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollPosition, expanded]);
+  }, [scrollPosition]);
 
-  const icons = [<FaDumbbell size={50} />, <MdLocalDining size={50} />, <IoPersonCircleSharp size={50} />];
+  const icons = [<AiOutlineMail size={50} />, <RiMailSendLine size={50} />, <FiPenTool size={50} />];
 
   const renderWhiteBoxes = () => {
     const whiteBoxes = [
-      { title: 'Workout Planner', content: 'This is the content of Workout Planner.' },
-      { title: 'Nutrition Planner', content: 'This is the content of Nutrition Planner.' },
-      { title: 'Social Forum', content: 'This is the content of Social Forum.' },
+      { title: 'Email Analysis', content: '' },
+      { title: 'Send Emails', content: '' },
+      { title: 'Style and Tone Analysis', content: '' },
     ];
 
     return whiteBoxes.map((box, index) => (
       <div
         key={box.title}
+        onMouseEnter={() => setHoveredBox(index)} // added this line
+        onMouseLeave={() => setHoveredBox(null)} // added this line
         style={{
           backgroundColor: 'white',
           height: '20vh',
           width: '80%',
           margin: index === 0 ? '0 auto 2em' : '2em auto',
           boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-          padding: '1em',
+          padding: '1.5em', // Increased padding to 1.5em
           borderRadius: '5px',
           transition: 'transform 1.2s ease',
-          transform: expanded ? 'scale(1.2)' : 'scale(1)',
+          transform: expanded || hoveredBox === index ? 'scale(1.2)' : 'scale(1)', // changed this line
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
         }}
       >
-        {icons[index]}
-        <div style={{ flex: 1, marginLeft: '1em' }}>
+        <div style={{ marginBottom: '0.5em' }}>{icons[index]}</div>
+        <div>
           <h2>{box.title}</h2>
           <p>{box.content}</p>
         </div>
-        <button
-          style={{
-            backgroundColor: '#305E48',
-            color: 'white', // Set the text color to match the background
-            padding: '0.5em 1em',
-            border: 'none',
-            marginLeft: '150px',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s ease, transform 0.2s ease',
-            fontFamily: 'Arial, sans-serif',
-            fontSize: '1em',
-            transform: 'scale(1)',
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = '#62ad6c';
-            e.target.style.transform = 'scale(1.07)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = '#305E48';
-            e.target.style.transform = 'scale(1)';
-          }}
-        >
-          Try Me!
-        </button>
       </div>
     ));
   };
@@ -88,7 +69,7 @@ const Body = () => {
     <div
       style={{
         background: '#305E48',
-        height: '120vh',
+        height: '140vh',
         width: '100%',
         display: 'flex',
         justifyContent: 'center',

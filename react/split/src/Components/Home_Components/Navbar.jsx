@@ -78,47 +78,32 @@ const Navbar = () => {
       <ul style={styles.navbarNav}>
         <li style={styles.navItem}>
           <a
-            href="/WorkoutPlanner"
+            href="/Home"
             className="nav-link"
-            onMouseEnter={() => setHoveredLink('Workout')}
+            onMouseEnter={() => setHoveredLink('Home')}
             onMouseLeave={() => setHoveredLink(null)}
             style={
-              hoveredLink === 'Workout'
+              hoveredLink === 'Home'
                 ? { ...styles.navLink, ...styles.navLinkHover }
                 : { ...styles.navLink }
             }
           >
-            {splitLetters('Workout')}
+            {splitLetters('Home')}
           </a>
         </li>
         <li style={styles.navItem}>
           <a
-            href="/NutritionPlanner"
+            href="/Message"
             className="nav-link"
-            onMouseEnter={() => setHoveredLink('Nutrition')}
+            onMouseEnter={() => setHoveredLink('Message')}
             onMouseLeave={() => setHoveredLink(null)}
             style={
-              hoveredLink === 'Nutrition'
+              hoveredLink === 'Message'
                 ? { ...styles.navLink, ...styles.navLinkHover }
                 : { ...styles.navLink }
             }
           >
-            {splitLetters('Nutrition')}
-          </a>
-        </li>
-        <li style={styles.navItem}>
-          <a
-            href="/SocialForum"
-            className="nav-link"
-            onMouseEnter={() => setHoveredLink('Social')}
-            onMouseLeave={() => setHoveredLink(null)}
-            style={
-              hoveredLink === 'Social'
-                ? { ...styles.navLink, ...styles.navLinkHover }
-                : { ...styles.navLink }
-            }
-          >
-            {splitLetters('Social')}
+            {splitLetters('Message')}
           </a>
         </li>
       </ul>

@@ -1,5 +1,3 @@
-/* AIPowered.css */
-
 .ai-powered {
   background-color: #5fb773; /* A fresh, modern light green color */
   color: white;
@@ -7,17 +5,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  text-align: center;
 }
 
-.ai-powered h1 {
+.ai-icon {
+  margin-right: 50px;
+}
+
+.ai-icon h1 {
   font-size: 5em;
   margin-bottom: 20px;
 }
 
-.ai-powered p {
+.description p {
   font-size: 1.2em;
   max-width: 800px; /* Ensures the text doesn't stretch too wide on large screens */
   margin: auto;
+  margin-top: 30px;
 }
