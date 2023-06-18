@@ -6,12 +6,6 @@ const ChatbotBox = () => {
   const [emailContent, setEmailContent] = useState('');
   const [response, setResponse] = useState(``);
   
-  const [textAreaHeight, setTextAreaHeight] = useState("auto");
-
-  useEffect(() => {
-    setTextAreaHeight(`${response.split("\n").length}`);
-  }, [response]);
-
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
@@ -25,7 +19,7 @@ const ChatbotBox = () => {
     .then((response) => response.json())
     .then((data) => {
       console.log('Response:', data);
-      setResponse(data); 
+      setResponse(data.response); 
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -59,7 +53,6 @@ const ChatbotBox = () => {
             value={response}
             style={{ resize: 'none', width: '90%', height: 'auto' }}
             readOnly
-            rows={textAreaHeight}
           />
         </div>
         </div>
