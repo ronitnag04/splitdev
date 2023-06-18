@@ -8,6 +8,7 @@ const ChatbotBox = () => {
   const [finalResponse, setFinalResponse] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
+  const [showPopup, setShowPopup] = useState(false);  // New state for the popup
 
   const textAreaRef = useRef(null);
 
@@ -53,18 +54,22 @@ const ChatbotBox = () => {
       },
       body: JSON.stringify({ email: email,
         subject:subject,
-        message: response }),
+        message:response }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Response:', data);
+        console.log('Response:',data);
+        if (data === 'success') {
+          setShowPopup(true);
+          setTimeout(() => setShowPopup(false), 3000);  // Hide popup after 3 seconds
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
       });
 
     console.log('Sending request:', url);
-  }, [response]);
+  }, [response, email, subject]);
 
   return (
     <div className="responseBox">
@@ -95,7 +100,6 @@ const ChatbotBox = () => {
           <FiSend />
         </button>
       </form>
-
       {response && (
         <div>
           <p className="chatbot-title">
@@ -118,6 +122,11 @@ const ChatbotBox = () => {
               </button>
             </form>
           </div>
+        </div>
+      )}
+      {showPopup && (
+        <div style={{position: 'fixed', top: '10px', right: '10px', backgroundColor: '#d4edda', color: '#155724', padding: '10px', borderRadius: '5px'}}>
+          Email sent!
         </div>
       )}
     </div>
