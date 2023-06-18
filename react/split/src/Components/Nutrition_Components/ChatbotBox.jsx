@@ -51,7 +51,9 @@ const ChatbotBox = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email,subject,response }),
+      body: JSON.stringify({ email: email,
+        subject:subject,
+        message: response }),
     })
       .then((response) => response.json())
       .then((data) => {
